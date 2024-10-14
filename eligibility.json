@@ -1,0 +1,28 @@
+
+{
+  "rules": {
+    "personal_income": {
+      "description": "Eligibility based on personal income",
+      "condition": "less than",
+      "value": 100,
+      "unit": "USD"
+    },
+    "house_size": {
+      "description": "Eligibility based on house size",
+      "condition": "less than",
+      "value": 100,
+      "unit": "square meters"
+    },
+    "employment_status": {
+      "description": "Eligibility based on employment status",
+      "condition": "unemployed",
+      "value": true
+    }
+  },
+  "eligibility_check": {
+    "personal_income": null,
+    "house_size": null,
+    "employment_status": null
+  }
+}
+
