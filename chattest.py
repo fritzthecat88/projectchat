@@ -6,14 +6,12 @@ import streamlit as st
 
 
 # Access the API key from Streamlit secrets
-openai_api_key = st.secrets.get("OPENAI_API_KEY")
+api_key = st.secrets.get("OPENAI_API_KEY")
 
 # Check if the API key was successfully retrieved
-if not openai_api_key:
+if not api_key:
     raise ValueError("API key is not set in Streamlit secrets.")
 
-
-openai.api_key = openai_api_key
 
 # Your OpenAI API calls here
 
