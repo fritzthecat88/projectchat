@@ -4,7 +4,7 @@ import openai
 import streamlit as st
 
 
-
+#this is testing git push if it works now not part of code for this function
 # Access the API key from Streamlit secrets
 openai_api_key = st.secrets.get("OPENAI_API_KEY")
 
