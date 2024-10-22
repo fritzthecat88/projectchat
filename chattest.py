@@ -13,10 +13,9 @@ if not api_key:
     raise ValueError("API key is not set in Streamlit secrets.")
 
 
-# Your OpenAI API calls here
-openai.api_key = api_key
+
 # Initialize the OpenAI client with your API key
-client = openai.OpenAI(api_key=openai.api_key)
+client = OpenAI(api_key=api_key)
 
 st.title("FSA ZA BISHU")
 
