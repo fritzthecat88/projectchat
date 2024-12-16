@@ -1,0 +1,8 @@
+name: streamlit_env
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - python=3.13
+  - jupyterlab
+prefix: /Users/aleksanenadovic/miniconda3/envs/streamlit_env
