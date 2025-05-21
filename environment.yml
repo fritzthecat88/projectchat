@@ -1,13 +1,17 @@
-name: streamlit_env
+name: streamlit_env          # any name is fine
 channels:
-  - https://repo.anaconda.com/pkgs/main
-  - https://repo.anaconda.com/pkgs/r
+  - conda-forge              # community channel with almost everything
+
 dependencies:
-  - python
-  - openai
+  # conda packages
+  - python=3.11
   - streamlit
-  - langchain here more details probably needed for the version
-	-langgraph more details to check here and do those have to be alined in env file under channels  
-- langchain-openai is a separate package
-prefix: /Users/aleksanenadovic/miniconda3/envs/streamlit_env    -------sthis should be erased as not comp with win10
+  - openai
+  - langchain=0.3.25         # pin versions only if you want stability
+  - langchain-openai=0.3.8
+  - pydantic<2               # keep v1 API
+  #  ↓ everything that conda *doesn’t* have goes under a nested pip list
+  - pip
+  - pip:
+      - langgraph            # pip-only packagename: streamlit_env
 
