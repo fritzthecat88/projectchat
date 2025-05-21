@@ -1,0 +1,29 @@
+// rules.json   (numeric-free, portable)
+{
+  "dečiji_dodatak": {
+    "all": [
+      { "var": "citizenship_ok" },
+      { "var": "residence_ok" },
+      { "var": "child_lives_in_rs" },
+      { "var": "child_attends_school_rs" },
+      { "var": "child_vaccinated" },
+      { "<=" : [ { "var": "child_age" }, 20 ] },
+
+      /* per-capita income ≤ cenzus */
+      { "<=" : [
+          { "/": [ { "var": "avg_income_3m" }, { "var": "members" } ] },
+          { "var": "cenzus_current" }
+      ]},
+
+      /* liquid assets ≤ multiplier × avg salary × members */
+      { "<=" : [
+          { "var":"liquid_assets" },
+          { "*":[ { "var":"liquid_asset_multiplier" },
+                   { "var":"avg_salary_rs" },
+                   { "var":"members" } ] }
+      ]},
+
+      { "==":[ { "var":"owns_extra_property" }, false ] }
+    ]
+  }
+}

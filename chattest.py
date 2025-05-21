@@ -1,77 +1,80 @@
 import os
 import json
-from openai import OpenAI
 import streamlit as st
 
+# ✨ new imports for LangChain + deterministic checker
+from eligibility_tool import eligibility_tool
+from langchain.agents import create_openai_functions_agent, AgentExecutor
+from langchain_openai import ChatOpenAI
 
-# Access the API key from Streamlit secrets
+# ────────────────────────────────────────────────────────────────────────────
+# API-key handling (unchanged)
 try:
     api_key = st.secrets["api_key"]["key"]
 except KeyError:
     raise ValueError("API key is not set in Streamlit secrets.")
 
-# Check if the API key was successfully retrieved
 if not api_key:
     raise ValueError("API key is empty in Streamlit secrets.")
 
-# Initialize the OpenAI client with your API key
-client = OpenAI(api_key=api_key)
 
 st.title("Aplikacija za Bisholina")
 
+# ────────────────────────────────────────────────────────────────────────────
+# Build LangChain agent that knows our StructuredTool
+llm = ChatOpenAI(
+    openai_api_key=api_key,         
+    model_name="gpt-3.5-turbo-0125",
+    temperature=0
+)
 
-
-
-
-#here a test of api call which will be ask_gpt but simpler form
-def ask_gpt(prompt):
-    response = client.chat.completions.create(  # Correct method for chat completions
-        model="gpt-4o-mini",  # Use GPT-4 Turbo
-        messages=[
-            {"role": "system", "content": "You are an assistant helping to determine social assistance eligibility."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=100,
-        temperature=0.5
+agent = create_openai_functions_agent(
+    llm=llm,
+    tools=[eligibility_tool],
+    system_message=(
+        "You are a helpful assistant that collects only the data needed to "
+        "determine entitlement to the Serbian child allowance. "
+        "When all fields are gathered, call `check_child_allowance` exactly once, "
+        "then explain the result in plain Serbian."
     )
-    return response.choices[0].message.content.strip()
+)
+agent_executor = AgentExecutor(agent=agent, tools=[eligibility_tool])
 
+def ask_gpt(prompt: str) -> str:
+    """Route user text through the LangChain agent and return the assistant’s reply."""
+    result = agent_executor.invoke({"input": prompt})
+    return result["output"]
 
+# ────────────────────────────────────────────────────────────────────────────
+# Initialise chat history once
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "Hello! Can you start answering my questions so we can see if you are eligible for FSA?"}]
+    st.session_state["messages"] = [
+        {
+            "role": "assistant",
+            "content": (
+                "Hello! Can you start answering my questions so we can see "
+                "if you are eligible for FSA?"
+            )
+        }
+    ]
 
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# Display chat messages from history on app rerun
+# Display past messages
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-
-# Accept user input here some changes will be needed
+# Chat input box
 prompt = st.chat_input("What is up?")
 
 if prompt:
     response = ask_gpt(prompt)
 
-    # Add user message to chat history
+    # update history
     st.session_state.messages.append({"role": "user", "content": prompt})
-
-    # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-    # Display user message in chat message container
+    # render user + assistant bubbles
     with st.chat_message("user"):
         st.markdown(prompt)
-
-    # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
-
-    
-
-
-
-

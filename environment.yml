@@ -6,4 +6,8 @@ dependencies:
   - python
   - openai
   - streamlit
-prefix: /Users/aleksanenadovic/miniconda3/envs/streamlit_env
+  - langchain here more details probably needed for the version
+	-langgraph more details to check here and do those have to be alined in env file under channels  
+- langchain-openai is a separate package
+prefix: /Users/aleksanenadovic/miniconda3/envs/streamlit_env    -------sthis should be erased as not comp with win10
+

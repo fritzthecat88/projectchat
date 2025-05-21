@@ -1,0 +1,9 @@
+// thresholds.json
+{
+  "cenzus": {
+    "regular":   12898.88,
+    "single_30": 16768.55,
+    "single_20": 15478.60
+  },
+  "liquid_asset_multiplier": 2
+}
