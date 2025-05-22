@@ -32,7 +32,7 @@ class EligibilityInput(BaseModel):
     @field_validator("last3_net_incomes")
     @classmethod				# ← required in v2
     def _exactly_three(cls, v: list):   # type: ignore[override]
-    	if len(v) != 3:
+        if len(v) != 3:
             raise ValueError("Need exactly three monthly income values")
         return v
 
@@ -76,6 +76,3 @@ eligibility_tool = StructuredTool.from_function(
     func=_run_tool,
     args_schema=EligibilityInput,
 )
-
-
-
