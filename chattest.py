@@ -2,7 +2,7 @@ import os
 import json
 import streamlit as st
 from eligibility_tool import eligibility_tool
-from langchain.agents import create_openai_functions_agent, AgentExecutor
+from langchain.agents import create_openai_tools_agent, AgentExecutor
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
@@ -37,7 +37,7 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 
 # Create the agent with the correct parameters
-agent = create_openai_functions_agent(
+agent = create_openai_tools_agent(
     llm=llm,
     tools=[eligibility_tool],
     prompt=prompt
