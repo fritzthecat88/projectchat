@@ -34,7 +34,7 @@ class EligibilityInput(BaseModel):
     def _exactly_three(cls, v: list):   # type: ignore[override]
     	if len(v) != 3:
     	    raise ValueError("Need exactly three monthly income values")
-	return v
+        return v
 
 # ---- wrapper that builds payload & runs JsonLogic -------------------------
 def _run_tool(**kwargs) -> Dict[str, Any]:
