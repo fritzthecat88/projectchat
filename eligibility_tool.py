@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 from typing import Literal, List, Dict, Any
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator   # v2 API
 from json_logic import jsonLogic                     # pip install json-logic
 from langchain.tools import StructuredTool
 
@@ -27,12 +27,14 @@ class EligibilityInput(BaseModel):
     citizenship_ok: bool
     residence_ok: bool
     avg_salary_rs: float = Field(..., ge=0)
-
-    @validator("last3_net_incomes")
-    def _exactly_three(cls, v):      # pylint: disable=no-self-argument
-        if len(v) != 3:
-            raise ValueError("Need exactly three monthly income values")
-        return v
+    
+    # v2 single-field validator
+    @field_validator("last3_net_incomes")
+    @classmethod				# ← required in v2
+    def _exactly_three(cls, v: list):   # type: ignore[override]
+    	if len(v) != 3:
+    	    raise ValueError("Need exactly three monthly income values")
+	return v
 
 # ---- wrapper that builds payload & runs JsonLogic -------------------------
 def _run_tool(**kwargs) -> Dict[str, Any]:

@@ -7,7 +7,7 @@ dependencies:
   - openai
   - langchain
   - langchain-openai
-  - pydantic<2
+  - pydantic>=2.7
   - pip
   - pip:
       - langgraph
