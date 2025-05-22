@@ -1,4 +1,3 @@
-// rules.json   (numeric-free, portable)
 {
   "dečiji_dodatak": {
     "all": [
@@ -9,13 +8,11 @@
       { "var": "child_vaccinated" },
       { "<=" : [ { "var": "child_age" }, 20 ] },
 
-      /* per-capita income ≤ cenzus */
       { "<=" : [
           { "/": [ { "var": "avg_income_3m" }, { "var": "members" } ] },
           { "var": "cenzus_current" }
       ]},
 
-      /* liquid assets ≤ multiplier × avg salary × members */
       { "<=" : [
           { "var":"liquid_assets" },
           { "*":[ { "var":"liquid_asset_multiplier" },
