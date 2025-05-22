@@ -1,11 +1,10 @@
 import os
 import json
 import streamlit as st
-
-# ✨ new imports for LangChain + deterministic checker
 from eligibility_tool import eligibility_tool
 from langchain.agents import create_openai_functions_agent, AgentExecutor
 from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 # ────────────────────────────────────────────────────────────────────────────
 # API-key handling (unchanged)
@@ -13,10 +12,8 @@ try:
     api_key = st.secrets["api_key"]["key"]
 except KeyError:
     raise ValueError("API key is not set in Streamlit secrets.")
-
 if not api_key:
     raise ValueError("API key is empty in Streamlit secrets.")
-
 
 st.title("Aplikacija za Bisholina")
 
@@ -28,20 +25,32 @@ llm = ChatOpenAI(
     temperature=0
 )
 
+# Create a proper prompt template
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant that collects only the data needed to "
+               "determine entitlement to the Serbian child allowance. "
+               "When all fields are gathered, call `check_child_allowance` exactly once, "
+               "then explain the result in plain Serbian."),
+    MessagesPlaceholder(variable_name="chat_history", optional=True),
+    ("human", "{input}"),
+    MessagesPlaceholder(variable_name="agent_scratchpad")
+])
+
+# Create the agent with the correct parameters
 agent = create_openai_functions_agent(
     llm=llm,
     tools=[eligibility_tool],
-    system_message=(
-        "You are a helpful assistant that collects only the data needed to "
-        "determine entitlement to the Serbian child allowance. "
-        "When all fields are gathered, call `check_child_allowance` exactly once, "
-        "then explain the result in plain Serbian."
-    )
+    prompt=prompt
 )
-agent_executor = AgentExecutor(agent=agent, tools=[eligibility_tool])
+
+agent_executor = AgentExecutor(
+    agent=agent, 
+    tools=[eligibility_tool],
+    verbose=True  # Set to False in production
+)
 
 def ask_gpt(prompt: str) -> str:
-    """Route user text through the LangChain agent and return the assistant’s reply."""
+    """Route user text through the LangChain agent and return the assistant's reply."""
     result = agent_executor.invoke({"input": prompt})
     return result["output"]
 
@@ -65,14 +74,13 @@ for message in st.session_state.messages:
 
 # Chat input box
 prompt = st.chat_input("What is up?")
-
 if prompt:
     response = ask_gpt(prompt)
-
+    
     # update history
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.session_state.messages.append({"role": "assistant", "content": response})
-
+    
     # render user + assistant bubbles
     with st.chat_message("user"):
         st.markdown(prompt)
