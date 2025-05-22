@@ -1,17 +1,13 @@
-name: streamlit_env          # any name is fine
+name: streamlit_env
 channels:
-  - conda-forge              # single channel = simpler, faster solves
-  - nodefaults               # optional: cuts out the slow “defaults” channel
-
+  - conda-forge
 dependencies:
-  # --- conda packages --------------------------------------------
   - python=3.11
   - streamlit
   - openai
-  - langchain=0.3.25
-  - langchain-openai=0.3.8
-  - "pydantic<2"             # quotes avoid YAML interpreting the < sign
-  # --- pip-only packages -----------------------------------------
-  - pip                       # this pulls pip itself from conda
+  - langchain
+  - langchain-openai
+  - pydantic<2
+  - pip
   - pip:
-      - langgraph            # anything conda doesn’t have goes here
+      - langgraph
