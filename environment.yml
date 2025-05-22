@@ -1,15 +1,15 @@
 name: streamlit_env
 channels:
-  - conda-forge
+  - conda-forge             # still needed so conda can create the env
 dependencies:
-  - python=3.11
-  - pip
-  - pip:
+  - python=3.11              # conda installs Python only
+  - pip                      # ensure pip itself is available
+  - pip:                     # ← everything else via pip
       - streamlit
       - openai
-      - langchain==0.1.20
-      - langchain-openai==0.0.7
-      - pydantic>=2.7
+      - langchain>=0.2.0       # switch to LangChain versions that ship Pydantic v2 support
+      - langchain-openai>=0.1.0
+      - pydantic>=2.7          # v2 for your @field_validator
       - langgraph
-      - json-logic
-      - commentjson
+      - json-logic             # for your jsonLogic import
+      - commentjson            # if you need to parse JSON with comments
