@@ -3,11 +3,12 @@ channels:
   - conda-forge
 dependencies:
   - python=3.11
+  - pip
   - streamlit
   - openai
-  - langchain
-  - langchain-openai
-  - pydantic>=2.7
-  - pip
   - pip:
+      - langchain
+      - langchain-openai  
+      - pydantic>=2.7
       - langgraph
+      - json-logic
