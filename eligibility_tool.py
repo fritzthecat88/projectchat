@@ -33,7 +33,7 @@ class EligibilityInput(BaseModel):
     @classmethod				# ← required in v2
     def _exactly_three(cls, v: list):   # type: ignore[override]
     	if len(v) != 3:
-    	    raise ValueError("Need exactly three monthly income values")
+            raise ValueError("Need exactly three monthly income values")
         return v
 
 # ---- wrapper that builds payload & runs JsonLogic -------------------------
@@ -76,3 +76,6 @@ eligibility_tool = StructuredTool.from_function(
     func=_run_tool,
     args_schema=EligibilityInput,
 )
+
+
+
