@@ -29,6 +29,8 @@ llm = ChatOpenAI(
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You are a helpful assistant that collects only the data needed to "
                "determine entitlement to the Serbian child allowance. "
+               "Ask questions one by one, and remember what the user has already told you. "
+               "Don't repeat questions you've already asked. "
                "When all fields are gathered, call `check_child_allowance` exactly once, "
                "then explain the result in plain Serbian."),
     MessagesPlaceholder(variable_name="chat_history", optional=True),
@@ -49,9 +51,12 @@ agent_executor = AgentExecutor(
     verbose=True  # Set to False in production
 )
 
-def ask_gpt(prompt: str) -> str:
+def ask_gpt(prompt: str, chat_history: list) -> str:
     """Route user text through the LangChain agent and return the assistant's reply."""
-    result = agent_executor.invoke({"input": prompt})
+    result = agent_executor.invoke({
+        "input": prompt,
+        "chat_history": chat_history
+    })
     return result["output"]
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -75,7 +80,15 @@ for message in st.session_state.messages:
 # Chat input box
 prompt = st.chat_input("What is up?")
 if prompt:
-    response = ask_gpt(prompt)
+    # Convert messages to chat history format for LangChain
+    chat_history = []
+    for msg in st.session_state.messages:
+        if msg["role"] == "user":
+            chat_history.append(("human", msg["content"]))
+        elif msg["role"] == "assistant":
+            chat_history.append(("ai", msg["content"]))
+    
+    response = ask_gpt(prompt, chat_history)
     
     # update history
     st.session_state.messages.append({"role": "user", "content": prompt})
