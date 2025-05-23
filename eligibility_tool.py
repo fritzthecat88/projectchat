@@ -1,7 +1,7 @@
 # eligibility_tool.py  ── deterministic checker + LangChain tool
 from __future__ import annotations
 from pathlib import Path
-import commentjson as json   # json.loads now accepts comments
+import json   # json.loads now accepts comments
 from typing import Literal, List, Dict, Any
 
 from pydantic import BaseModel, Field, field_validator   # v2 API
