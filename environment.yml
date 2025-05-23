@@ -11,7 +11,7 @@ dependencies:
       - langchain-openai>=0.1.0
       - pydantic>=2.7          # v2 for your @field_validator
       - langgraph
-      - git+https://github.com/nadirizr/json-logic-py.git@master  
+       
 
       
     
