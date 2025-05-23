@@ -1,11 +1,11 @@
 from pathlib import Path
-import commentjson
+import json
 from pydantic import BaseModel, Field
 from langchain_core.tools import StructuredTool
 
 # Load configuration
 ROOT = Path(__file__).parent
-THRESHOLDS = commentjson.loads((ROOT / "thresholds.json").read_text(encoding="utf-8"))
+THRESHOLDS = json.loads((ROOT / "thresholds.json").read_text(encoding="utf-8"))
 
 # Simple rule evaluator that replaces json_logic
 def evaluate_rules(rules, data):
