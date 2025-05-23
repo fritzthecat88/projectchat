@@ -1,8 +1,74 @@
 {
-  "cenzus": {
-    "regular":   12898.88,
-    "single_30": 16768.55,
-    "single_20": 15478.60
+  "max_age": 70,
+  "max_children": 4,
+  "max_income": 100000,
+  "average_salary": 82000,
+  "income_multipliers": {
+    "single_parent_categories_1_5": 1.3,
+    "single_parent_categories_6_10": 1.2,
+    "disabled_child": 1.2,
+    "foster_parent": 1.2
   },
-  "liquid_asset_multiplier": 2
+  "child_benefit_amounts": {
+    "base_amount": 3500,
+    "single_parent_multiplier": 1.3,
+    "disabled_child_multiplier": 1.5,
+    "max_total_multiplier": 1.8
+  },
+  "property_limits": {
+    "max_rooms_formula": "family_members + 1",
+    "max_agricultural_land_per_member_hectares": 2,
+    "max_other_property_sqm": 20,
+    "max_garage_allowed": true,
+    "max_business_space_sqm": 20
+  },
+  "liquid_assets": {
+    "max_per_member_in_average_salaries": 2,
+    "exclusion_period_formula": "total_assets / average_salary"
+  },
+  "age_limits": {
+    "preschool_min": 5.5,
+    "elementary_school_max": 15,
+    "high_school_regular_max": 20,
+    "high_school_justified_delay_max": 21,
+    "disabled_child_max": 26
+  },
+  "cadastral_income": {
+    "threshold_percentage_with_other_income": 3,
+    "threshold_percentage_without_other_income": 7,
+    "max_residential_plot_sqm": 500
+  },
+  "required_documents": {
+    "citizenship": ["birth_certificate", "id_card", "residence_permit"],
+    "income": ["salary_slips_3_months", "tax_declaration", "unemployment_certificate"],
+    "property": ["property_ownership_certificate", "cadastral_income_certificate"],
+    "children": ["birth_certificates", "school_attendance_certificate", "vaccination_certificate"],
+    "special_cases": ["disability_assessment", "single_parent_declaration", "court_custody_decision"]
+  },
+  "payment_schedule": {
+    "payment_day": 1,
+    "notification_deadline": 8,
+    "processing_deadline": 15
+  },
+  "special_provisions": {
+    "twins_or_more": "eligible_even_if_exceeds_4_children",
+    "child_in_medical_institution": "requires_ministry_approval",
+    "foreign_citizen_reciprocity": "depends_on_international_agreement"
+  },
+  "excluded_income_types": [
+    "travel_expenses",
+    "business_trip_allowances",
+    "retirement_severance",
+    "solidarity_assistance",
+    "jubilee_awards",
+    "death_benefits",
+    "seasonal_work",
+    "child_support_paid"
+  ],
+  "notes": {
+    "currency": "RSD",
+    "last_updated": "2024-01",
+    "index_adjustment": "Adjusted January 1 and July 1 based on consumer price index",
+    "census_source": "Government decree based on minister's proposal"
+  }
 }
