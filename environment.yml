@@ -11,5 +11,7 @@ dependencies:
       - langchain-openai>=0.1.0
       - pydantic>=2.7          # v2 for your @field_validator
       - langgraph
-      - json-logic>=1.3.0              # for your jsonLogic but it is not installed on my local comp
+      - git+https://github.com/nadirizr/json-logic-py.git@master  
+
+      
     
